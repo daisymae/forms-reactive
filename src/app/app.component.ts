@@ -9,6 +9,7 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 export class AppComponent implements OnInit {
   genders = ['male', 'female'];
   signupForm: FormGroup;
+  forbiddenUsernames = ['Chris', 'Anna'];
 
   ngOnInit() {
     // initialize before rendering template
@@ -17,7 +18,8 @@ export class AppComponent implements OnInit {
       // don't want to execute the required method, only want to pass the reference
       // can have FormGroup within a FormGroup
       'userData': new FormGroup({
-        'username': new FormControl(null, Validators.required),
+        // need to bind 'this' to the validation because Angular will be calling the function, not this code
+        'username': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
         'email': new FormControl(null, [Validators.required, Validators.email]),  
       }),
       'gender': new FormControl('male'),
@@ -35,5 +37,15 @@ export class AppComponent implements OnInit {
   onAddHobby(){
     const control = new FormControl(null, Validators.required);
     (<FormArray>this.signupForm.get('hobbies')).push(control);
+  }
+
+  forbiddenNames(control: FormControl): {[s: string]: boolean} {
+    // {nameIsForbidden: true} <-- example return
+    // need to check for -1; else -1 is interpreted as true and will always return true
+    if(this.forbiddenUsernames.indexOf(control.value) !== -1) {
+      return {'nameIsForbidden': true};
+    }
+    // if validation is successful MUST pass null
+    return null;
   }
 }
