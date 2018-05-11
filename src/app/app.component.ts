@@ -34,12 +34,33 @@ export class AppComponent implements OnInit {
     this.signupForm.statusChanges.subscribe(
       (status) => console.log(status)
     );
+
+    this.signupForm.setValue({
+      'userData': {
+        'username': 'Max',
+        'email': 'max@test.com'
+      },
+      'gender': 'male',
+      // TODO: figure out how to pre-populate the FormArray
+      // this did not work: 'Snorkeling', 'Smoking', 'Schnitzeling'
+      'hobbies': []
+    });
+
+    // patchValue here works same as in template forms: can modify only some of the values
+    this.signupForm.patchValue({
+      'userData': {
+        'username': 'Anna',
+      },
+    });
   }
 
   // difference from template-driven is no longer need
   // to get local reference because created here in the code
   onSubmit() {
     console.log(this.signupForm);
+    // on reset, can provide the items to not clear;
+    // since set a gender default, this will retain that default
+    this.signupForm.reset({'gender': 'male'});
   }
 
   // want to add an array of controls
