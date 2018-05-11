@@ -19,4 +19,10 @@ export class AppComponent implements OnInit {
       'gender': new FormControl('male')
     });
   }
+
+  // difference from template-driven is no longer need
+  // to get local reference because created here in the code
+  onSubmit() {
+    console.log(this.signupForm);
+  }
 }
