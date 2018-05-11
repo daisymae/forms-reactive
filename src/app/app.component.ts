@@ -15,8 +15,11 @@ export class AppComponent implements OnInit {
     this.signupForm = new FormGroup({
       // first parameter is default value for the form field
       // don't want to execute the required method, only want to pass the reference
-      'username': new FormControl(null, Validators.required),
-      'email': new FormControl(null, [Validators.required, Validators.email]),
+      // can have FormGroup within a FormGroup
+      'userData': new FormGroup({
+        'username': new FormControl(null, Validators.required),
+        'email': new FormControl(null, [Validators.required, Validators.email]),  
+      }),
       'gender': new FormControl('male')
     });
   }
